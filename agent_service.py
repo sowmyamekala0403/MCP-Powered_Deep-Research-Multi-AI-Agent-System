@@ -8,6 +8,10 @@ from groq import Groq
 load_dotenv()
 
 app = FastAPI()
+SERVICES = {
+    "search": "https://search-service.onrender.com/tool/search",
+    "scrape": "https://scrape-service.onrender.com/tool/scrape"
+}
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 app.add_middleware(
     CORSMiddleware,
