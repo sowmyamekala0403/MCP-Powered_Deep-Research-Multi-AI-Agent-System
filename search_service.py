@@ -17,7 +17,7 @@ app.add_middleware(
 tavily = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
 
 @app.post("/tool/search")
-def search(data: dict):
+def search(data: str):
     query = data["query"]
 
     results = tavily.search(query=query, max_results=5)
