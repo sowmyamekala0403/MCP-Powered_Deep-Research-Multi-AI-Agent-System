@@ -9,8 +9,8 @@ load_dotenv()
 
 app = FastAPI()
 SERVICES = {
-    "search": "https://search-service.onrender.com/tool/search",
-    "scrape": "https://scrape-service.onrender.com/tool/scrape"
+    "search": "https://mcp-powered-deep-research-multi-ai-agent-2bva.onrender.com",
+    "scrape": "https://mcp-powered-deep-research-multi-ai-agent-wx42.onrender.com"
 }
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 app.add_middleware(
