@@ -8,9 +8,11 @@ from groq import Groq
 load_dotenv()
 
 app = FastAPI()
+
 SERVICES = {
-    "search": "https://mcp-powered-deep-research-multi-ai-agent-2bva.onrender.com",
-    "scrape": "https://mcp-powered-deep-research-multi-ai-agent-wx42.onrender.com"
+    "search": "https://search-service.onrender.com/tool/search",
+    "scrape": "https://scrape-service.onrender.com/tool/scrape"
+
 }
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 app.add_middleware(
@@ -20,7 +22,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-@app.post("/agent/query")
+@app.post("/")
 def agent(data: dict):
     query = data["query"]
 
