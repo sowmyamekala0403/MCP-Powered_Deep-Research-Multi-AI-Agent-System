@@ -72,7 +72,6 @@
             color: blue;
             margin-bottom: 5px;
         }
-
     </style>
 </head>
 
@@ -80,17 +79,21 @@
 
 <div class="container">
 
-    <h1>AI Research Agent</h1>
+    <h1>AI Research Agent (MCP System)</h1>
 
+    <!-- INPUT UI -->
     <div class="search-box">
         <input type="text" id="query" placeholder="Ask anything...">
         <button onclick="search()">Search</button>
     </div>
 
+    <!-- LOADING -->
     <div id="loading" class="loading"></div>
 
+    <!-- RESULT -->
     <div id="summary" class="summary-box"></div>
 
+    <!-- SOURCES -->
     <div id="sources" class="sources"></div>
 
 </div>
@@ -102,33 +105,50 @@ async function search() {
 
     if (!query) return;
 
+    // UI updates
     document.getElementById("loading").innerText = "🔍 Searching and analyzing...";
     document.getElementById("summary").innerText = "";
     document.getElementById("sources").innerHTML = "";
 
-    let res = await fetch("http://localhost:8003/agent/query", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({query: query})
-    });
+    try {
+        // CALL YOUR RENDER BACKEND
+        let res = await fetch("https://mcp-powered-deep-research-multi-ai-agent.onrender.com/agent/query", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ query: query })
+        });
 
-    let data = await res.json();
+        let data = await res.json();
 
-    document.getElementById("loading").innerText = "";
+        document.getElementById("loading").innerText = "";
 
-    document.getElementById("summary").innerText = data.summary;
+        // SHOW SUMMARY
+        document.getElementById("summary").innerText =
+            data.summary || data.error || "No response received";
 
-    let sourcesDiv = document.getElementById("sources");
-    sourcesDiv.innerHTML = "<h3>Sources:</h3>";
+        // SHOW SOURCES
+        let sourcesDiv = document.getElementById("sources");
+        sourcesDiv.innerHTML = "<h3>Sources:</h3>";
 
-    data.sources.forEach(url => {
-        let link = document.createElement("a");
-        link.href = url;
-        link.innerText = url;
-        link.target = "_blank";
-        link.className = "source-link";
-        sourcesDiv.appendChild(link);
-    });
+        if (data.sources) {
+            data.sources.forEach(url => {
+                let link = document.createElement("a");
+                link.href = url;
+                link.innerText = url;
+                link.target = "_blank";
+                link.className = "source-link";
+                sourcesDiv.appendChild(link);
+            });
+        }
+
+    } catch (err) {
+        document.getElementById("loading").innerText = "";
+        document.getElementById("summary").innerText =
+            "Error: Unable to connect to backend";
+        console.error(err);
+    }
 }
 </script>
 
