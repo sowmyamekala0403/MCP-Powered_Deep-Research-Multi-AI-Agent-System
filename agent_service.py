@@ -21,7 +21,7 @@ app.add_middleware(
 # Groq LLM client
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-# MCP Services (IMPORTANT: keep correct deployed URLs)
+# MCP Services 
 SERVICES = {
     "search": "https://search-service.onrender.com/tool/search",
     "scrape": "https://scrape-service.onrender.com/tool/scrape"
